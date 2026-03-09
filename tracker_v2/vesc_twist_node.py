@@ -2,6 +2,8 @@
 Subscribes to /cmd_vel and drives the VESC.
 """
 
+import traceback
+
 import rclpy
 from geometry_msgs.msg import Twist
 from rclpy.node import Node
@@ -83,12 +85,17 @@ class VescTwist(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+    node = None
     try:
         node = VescTwist()
         rclpy.spin(node)
-        node.destroy_node()
-        rclpy.shutdown()
+    except KeyboardInterrupt:
+        pass
     except Exception:
+        traceback.print_exc()
+    finally:
+        if node is not None:
+            node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
 

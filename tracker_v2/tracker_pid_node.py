@@ -135,7 +135,11 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.cmd_pub.publish(Twist())
+        if rclpy.ok():
+            try:
+                node.cmd_pub.publish(Twist())
+            except Exception:
+                pass
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
