@@ -5,12 +5,12 @@ tracker_camera_node:
     target_box_fraction: 0.40
     model_path: ""
     tracker_cfg_path: ""
-    enable_gui: true
+    enable_gui: false
     show_info_panel: true
     publish_annotated_image: true
-    publish_debug_image: true
-    publish_disparity_image: true
-    enable_disparity: true
+    publish_debug_image: false
+    publish_disparity_image: false
+    enable_disparity: false
     extended_disparity: false
     subpixel: false
     lr_check: true
