@@ -109,7 +109,7 @@ class TrackerPidNode(Node):
         self._e_lat_prev = self._e_lat
         self._e_dist_prev = self._e_dist
 
-        steering = self._clamp(-steer_raw, self.max_steering)
+        steering = self._clamp(steer_raw, self.max_steering)
         throttle = self._clamp(throt_raw, self.max_speed)
         if throttle < 0.0:
             throttle = 0.0

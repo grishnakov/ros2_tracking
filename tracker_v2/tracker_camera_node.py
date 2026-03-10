@@ -355,6 +355,7 @@ class TrackerCameraNode(Node):
         self.image_frame_id = str(self.get_parameter('image_frame_id').value)
 
         self.image_pub = self.create_publisher(Image, '/camera/color/image_raw', 10)
+        self.raw_image_pub = self.create_publisher(Image, '/camera/color/image_raw/raw', 10)
         self.debug_image_pub = self.create_publisher(Image, '/tracker/debug_image', 10)
         self.disparity_pub = self.create_publisher(Image, '/tracker/disparity_image', 10)
         self.error_pub = self.create_publisher(Float32MultiArray, '/tracking_error', 10)
@@ -390,6 +391,11 @@ class TrackerCameraNode(Node):
             self._disparity_q,
             self._max_disparity,
         ) = self._create_pipeline(model_path)
+        # Enter the pipeline context AFTER all nodes and queues are built,
+        # matching the `with pipeline: pipeline.start()` pattern from the
+        # standalone test.  Entering the context before node creation seals
+        # the pipeline graph prematurely in depthai 3.x, causing empty queues.
+        self._exit_stack.enter_context(self._pipeline)
         self._pipeline.start()
 
         self._gui_ready = False
@@ -431,7 +437,7 @@ class TrackerCameraNode(Node):
             self.get_logger().warn(f'GUI disabled: {exc}')
 
     def _create_pipeline(self, model_path: str):
-        pipeline = self._exit_stack.enter_context(dai.Pipeline(self._device))
+        pipeline = dai.Pipeline(self._device)
 
         cam_rgb = pipeline.create(dai.node.Camera).build(
             boardSocket=dai.CameraBoardSocket.CAM_A
@@ -621,6 +627,8 @@ class TrackerCameraNode(Node):
             (person for person in persons if person.track_id == self.state_machine.target_id),
             None,
         )
+
+        self._publish_image(self.raw_image_pub, frame)
 
         tracking_frame = _draw_tracking_frame(frame, persons, self.state_machine)
         if self.publish_annotated_image:
