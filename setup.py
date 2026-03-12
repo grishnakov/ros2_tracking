@@ -29,7 +29,6 @@ setup(
         'lap',
         'pyserial',
         'pyvesc',
-        'ultralytics',
     ],
     zip_safe=True,
     maintainer='team7',
