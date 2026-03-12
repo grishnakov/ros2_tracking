@@ -17,7 +17,7 @@ import cv2
 import depthai as dai
 import numpy as np
 import rclpy
-import ultralytics
+# import ultralytics
 from ament_index_python.packages import get_package_share_directory
 from depthai_nodes.node import ParsingNeuralNetwork
 from geometry_msgs.msg import Point
