@@ -28,6 +28,8 @@ def launch_setup(context, *args, **kwargs):
             gps_bridge_params.get('runner_command', ''),
         )
     ).strip()
+    gps_udp_params = nav_cfg.get('gps_udp_bridge_node', {}).get('ros__parameters', {})
+    gps_udp_port = int(gps_udp_params.get('listen_port', 0))
     camera_enabled = cfg.get('camera_enabled', True)
     pid_enabled = cfg.get('pid_enabled', True)
     vesc_enabled = cfg.get('vesc_enabled', True)
@@ -107,6 +109,19 @@ def launch_setup(context, *args, **kwargs):
                 '(set gps_runner_bridge_node.runner_command or TRACKER_V2_GPS_RUNNER_COMMAND)'
             )
         )
+
+    if gps_udp_port > 0:
+        nodes.append(
+            Node(
+                package='tracker_v2',
+                executable='gps_udp_bridge_node',
+                name='gps_udp_bridge_node',
+                parameters=[nav_params],
+                output='screen',
+            )
+        )
+    else:
+        nodes.append(LogInfo(msg='[nav_params] gps UDP bridge port <= 0 - skipping GPS UDP bridge'))
 
     if search_enabled:
         nodes.append(

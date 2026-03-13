@@ -24,6 +24,15 @@ gps_runner_bridge_node:
     publish_invalid_fixes: false
     verbose_runner_output: false
 
+gps_udp_bridge_node:
+  ros__parameters:
+    listen_host: "0.0.0.0"
+    listen_port: 10110
+    fix_topic: "/fix"
+    frame_id: "gps"
+    publish_invalid_fixes: false
+    verbose_udp_logging: false
+
 search_nav_node:
   ros__parameters:
     pose_topic: "/gps/local_pose"

@@ -42,6 +42,7 @@ setup(
             'tracker_pid_node    = tracker_v2.tracker_pid_node:main',
             'gps_waypoint_node   = tracker_v2.gps_waypoint_node:main',
             'gps_runner_bridge_node = tracker_v2.gps_runner_bridge_node:main',
+            'gps_udp_bridge_node = tracker_v2.gps_udp_bridge_node:main',
             'search_nav_node     = tracker_v2.search_nav_node:main',
             'control_mode_node   = tracker_v2.control_mode_node:main',
             'cmd_vel_mux_node    = tracker_v2.cmd_vel_mux_node:main',
