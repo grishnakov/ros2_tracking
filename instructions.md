@@ -1,14 +1,27 @@
-pull image
+Assuming x11 installed and working on RPI and Laptop
 
 
-set udev rules on host
+```bash
+ssh -X -Y user@rpihostname
+```
 
+Fix X11 permissions
+```bash
+xhost +local:root
+```
 
-use xhost+
+set udev rules:
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
 
+pull docker container:
+```bash
+docker pull algrish2/ros2-kilted:ver-2-with-final-proj
+```
 
 proper docker command:
-
 ```bash
 docker run \
     --name ros2_doc \
@@ -18,14 +31,15 @@ docker run \
     -e DISPLAY=$DISPLAY \
     --volume /dev/bus/usb:/dev/bus/usb \
     --device-cgroup-rule='c 189:* rmw' \
+    --device /dev/video0 \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
     --volume /etc/passwd:/etc/passwd:ro \
     --volume /etc/group:/etc/group:ro \
-    algrish2/ros2-kilted:ver-1
+    algrish2/ros2-kilted:ver-2-with-final-proj
 ```
 
 
-install astral 
+install uv 
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -44,7 +58,7 @@ install proper venv for this project/package.
 cd /home/projects/ros2_ws
 uv venv .venv --seed
 source .venv/bin/activate
-uv pip install \
+uv add \
   colcon-common-extensions \
   numpy \
   opencv-python \
@@ -58,7 +72,7 @@ uv pip install \
 ```
 
 
-update the pyvesc package by commenting out lines 41 and 42 in `.venv/lib/python3.12/site-packages/pyvesc/VESC/VESC.py`
+Fix the pyvesc package by commenting out lines 41 and 42 in `.venv/lib/python3.12/site-packages/pyvesc/VESC/VESC.py`
 
 
 ```python
