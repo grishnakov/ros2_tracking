@@ -46,13 +46,13 @@ search_nav_node:
     radius_topic: "/search/set_radius"
     loops_topic: "/search/set_loops"
     frame_id: "map"
-    radius_m: 8.0
+    radius_m: 20.0
     num_loops: 3
     points_per_loop: 240
     lookahead_m: 1.5
     wheelbase_m: 0.25
     search_speed: 0.25
-    max_steering_angle: 0.55
+    max_steering_angle: 0.4
     control_hz: 10.0
     pose_timeout_s: 6.0
     auto_center_on_first_pose: true

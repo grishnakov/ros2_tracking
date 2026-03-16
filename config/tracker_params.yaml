@@ -17,16 +17,16 @@ tracker_camera_node:
     image_frame_id: "camera_link"
     auto_acquire_in_search: true
     auto_return_to_search: true
-    ui_search_radius_m: 8.0
+    ui_search_radius_m: 20.0
     ui_search_radius_step_m: 1.0
     ui_search_num_loops: 3
 
 tracker_pid_node:
   ros__parameters:
-    Kp_steering: 0.8
-    Ki_steering: 0.0
+    Kp_steering: 0.3
+    Ki_steering: 0.01
     Kd_steering: 0.10
-    Kp_throttle: 0.5
+    Kp_throttle: 0.3
     Ki_throttle: 0.0
     Kd_throttle: 0.05
     integral_max: 0.5
